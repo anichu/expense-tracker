@@ -24,16 +24,17 @@ export default function App() {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [name, setName] = useState("");
 	const [expense, setExpense] = useState("");
-	const { setExpenses } = useContext(TaskContext);
+	const { setExpenses, expenses } = useContext(TaskContext);
 
 	const pressHandler = () => {
 		console.log("presseded");
 		setModalVisible(true);
 	};
 
+	console.log("expenses~", expenses);
+
 	const submitHandler = () => {
-		console.log(name);
-		console.log(expense);
+		console.log("clicked for add expense");
 		if (!name || !expense) {
 			Alert.alert("Alert!!!", "Please, fill the blank input", [
 				{
@@ -47,26 +48,31 @@ export default function App() {
 			return;
 		}
 
-		fetch("http://192.168.1.108:7070/api/expense/", {
+		fetch("https://expensetracker-ivory-alpha.vercel.app/api/expense", {
 			method: "POST",
 			headers: {
-				"content-type": "application/json",
+				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
 				name,
 				expense,
 			}),
 		})
-			.then((res) => res.json())
+			.then((res) => {
+				if (!res.ok) {
+					throw new Error(`Network response was not ok: ${res.status}`);
+				}
+				return res.json();
+			})
 			.then((data) => {
 				console.log("sina-sina", data);
-				setExpenses((prev) => [data, ...prev]);
+				setExpenses([data, ...expenses]);
 				setName("");
 				setExpense("");
 				setModalVisible(false);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.error("Error during fetch:", err);
 			});
 	};
 

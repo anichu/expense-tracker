@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Expense from "./Expense";
 
 const Expenses = ({ expenses }) => {
-	console.log("expense", expenses);
+	// console.log("expense", expenses);
 
 	return (
 		<View style={styles.expenseContainer}>

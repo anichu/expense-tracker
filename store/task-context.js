@@ -8,7 +8,7 @@ export const TaskContext = createContext({
 const TaskContextProvider = ({ children }) => {
 	const [expenses, setExpenses] = useState([]);
 	useEffect(() => {
-		fetch("http://192.168.1.108:7070/api/expense/")
+		fetch("https://expensetracker-ivory-alpha.vercel.app/api/expense")
 			.then((res) => res.json())
 			.then((data) => {
 				setExpenses(data);
