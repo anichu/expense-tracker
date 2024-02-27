@@ -1,42 +1,63 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import Expenses from "../components/Expenses";
 import { TaskContext } from "../store/task-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { ExpenseServices } from "../services/expense";
+import { UserContext } from "../store/user-context";
+import { calculateTotalExpenses } from "../utils/expense";
+import TotalExpenses from "../components/TotalExpenses";
 
 const AllExpense = () => {
-	const { expenses, setExpenses } = useContext(TaskContext);
-	useFocusEffect(
-		React.useCallback(() => {
-			const fetchData = async () => {
-				try {
-					const { data } = await ExpenseServices.getExpenses();
-					setExpenses(data);
-				} catch (error) {
-					console.log(error);
-				}
-			};
+  const { expenses, expensesRefetch } = useContext(TaskContext);
+  const { user } = useContext(UserContext);
 
-			fetchData();
-		}, [])
-	);
-	return (
-		<View style={styles.container}>
-			<ScrollView style={{ width: "100%", flex: 1 }}>
-				<View style={{ flex: 1 }}>
-					<Expenses expenses={expenses} />
-				</View>
-			</ScrollView>
-		</View>
-	);
+  // Memoize the result of expensiveComputation
+  const total = useMemo(() => calculateTotalExpenses(expenses), [expenses]);
+
+  console.log(expenses);
+  console.log("user", user._id);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await expensesRefetch();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        try {
+          await expensesRefetch();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchData();
+    }, [])
+  );
+  return (
+    <View style={styles.container}>
+      <ScrollView style={{ width: "100%", flex: 1 }}>
+        <TotalExpenses title="Total expenses" total={total} />
+        <View style={{ flex: 1 }}>
+          <Expenses expenses={expenses} />
+        </View>
+      </ScrollView>
+    </View>
+  );
 };
 
 export default AllExpense;
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "purple",
-	},
+  container: {
+    flex: 1,
+    backgroundColor: "purple",
+  },
 });
