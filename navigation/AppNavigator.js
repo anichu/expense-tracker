@@ -10,9 +10,9 @@ import {
   Button,
   Alert,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useContext, useState } from "react";
 import AllExpense from "../Screens/AllExpense";
@@ -88,33 +88,8 @@ export default function AppNavigator() {
     } catch (error) {
       setLoading(false);
       console.log(error);
+      console.log(error?.message);
     }
-
-    // fetch("https://expensetracker-ivory-alpha.vercel.app/api/expense", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     name,
-    //     expense,
-    //   }),
-    // })
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       throw new Error(`Network response was not ok: ${res.status}`);
-    //     }
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     console.log("sina-sina", data);
-    //     setName("");
-    //     setExpense("");
-    //     setModalVisible(false);
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error during fetch:", err);
-    //   });
   };
 
   console.log("value~~", value);
@@ -132,11 +107,11 @@ export default function AppNavigator() {
             headerTintColor: "white",
             headerRight: () => (
               <Pressable onPress={pressHandler}>
-                <Ionicons
-                  name="md-add-circle"
+                <AntDesign
+                  name="pluscircle"
                   style={styles.addIcon}
                   size={24}
-                  color="black"
+                  color="white"
                 />
               </Pressable>
             ),

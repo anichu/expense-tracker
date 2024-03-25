@@ -13,6 +13,8 @@ import { UserStore } from "../utils/user";
 import SetExpenseForm from "../components/SetExpenseModal";
 import { TargetServices } from "../services/target";
 import Loading from "../shared/Loading";
+import { Entypo } from "@expo/vector-icons";
+import TargetExpense from "../components/TargetExpense";
 
 const ProfileScreen = () => {
   const { user, setUser } = useContext(UserContext);
@@ -74,7 +76,7 @@ const ProfileScreen = () => {
 
       <TouchableOpacity
         style={{
-          backgroundColor: "white",
+          backgroundColor: "orange",
           padding: 10,
           marginBottom: 10,
           width: "100%",
@@ -102,14 +104,13 @@ const ProfileScreen = () => {
 
       <View
         style={{
-          backgroundColor: "orange",
           width: "100%",
           height: 50,
           justifyContent: "center",
           alignItems: "center",
-          marginVertical: 10,
-          borderRadius: 10,
-          elevation: 10,
+          marginVertical: 15,
+          borderBottomWidth: 3,
+          borderBottomColor: "#ccc",
         }}
       >
         <Text>Target Expenses</Text>
@@ -123,56 +124,25 @@ const ProfileScreen = () => {
           justifyContent: "center",
         }}
       >
-        {data &&
+        {data && data.length > 0 ? (
           data.map((item, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  width: "100%",
-                  backgroundColor: "purple",
-                  borderRadius: 10,
-                  padding: 20,
-                  marginBottom: 20,
-                  shadowColor: "#000",
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={styles.label}>Name:</Text>
-                  <Text style={styles.text}>{item.name}</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 10,
-                  }}
-                >
-                  <Text style={styles.label}>Category:</Text>
-                  <Text style={styles.text}>{item.category}</Text>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 10,
-                  }}
-                >
-                  <Text style={styles.label}>Amount: </Text>
-                  <Text style={styles.text}>{item.expense}</Text>
-                </View>
-              </View>
-            );
-          })}
+            return <TargetExpense refetch={refetch} item={item} key={index} />;
+          })
+        ) : (
+          <View>
+            <Text
+              style={{
+                fontSize: 30,
+                textAlign: "center",
+                color: "red",
+                fontWeight: "900",
+                marginTop: 30,
+              }}
+            >
+              There is no target expense
+            </Text>
+          </View>
+        )}
       </ScrollView>
       <TouchableOpacity
         style={{

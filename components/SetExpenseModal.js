@@ -18,7 +18,7 @@ import Loading from "../shared/Loading";
 const SetExpenseForm = ({ modalVisible, setModalVisible, refetch }) => {
   const [expenseName, setExpenseName] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
-  const [expenseCategory, setExpenseCategory] = useState("food");
+  const [expenseCategory, setExpenseCategory] = useState("");
   const [expenseTime, setExpenseTime] = useState("");
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -46,7 +46,7 @@ const SetExpenseForm = ({ modalVisible, setModalVisible, refetch }) => {
     let createTarget = {
       name: expenseName,
       expense: expenseAmount,
-      category: expenseCategory,
+      category: value,
       endDate: date,
       user: user?._id,
     };
@@ -79,6 +79,8 @@ const SetExpenseForm = ({ modalVisible, setModalVisible, refetch }) => {
   // if(loading){
   //   return <Loading/>
   // }
+
+  console.log("value~", value);
 
   return (
     <Modal
@@ -129,7 +131,7 @@ const SetExpenseForm = ({ modalVisible, setModalVisible, refetch }) => {
             onPress={showDatePicker}
           >
             <Text style={{ color: "#ccc" }}>
-              {date ? date.toString() : "Event Date"}
+              {date ? date.toString() : "End Date"}
             </Text>
           </TouchableOpacity>
 

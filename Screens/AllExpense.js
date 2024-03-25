@@ -27,7 +27,7 @@ const AllExpense = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user]);
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {
@@ -39,7 +39,7 @@ const AllExpense = () => {
       };
 
       fetchData();
-    }, [])
+    }, [user])
   );
   return (
     <View style={styles.container}>
